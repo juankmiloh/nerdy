@@ -3,7 +3,6 @@ ion-menu-button {
 }
 
 #container {
-  text-align: center;
   position: absolute;
   left: 0;
   right: 0;
@@ -25,4 +24,85 @@ ion-menu-button {
 
 #container a {
   text-decoration: none;
+}
+
+.content {
+  padding-top: 150px;
+  display: flex;
+  border: 0px solid #000;
+  gap: 40px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  border: 0px solid #000;
+  width: 60%;
+  gap: 20px;
+}
+
+.title {
+  font-size: 50px;
+  border: 0px solid #000;
+  font-weight: bold;
+}
+
+.options-box {
+  font-size: 30px;
+  border: 1px solid #000;
+  color: white;
+}
+
+.content-subject {
+  flex-direction: row;
+  display: flex;
+  border: 0px solid #000;
+  gap: 40px;
+}
+
+.subjects {
+  border: 0px solid #000;
+  height: 80vh;
+  width: 50%;
+  background-color: #9494cc;
+  border-radius: 20px;
+}
+
+.button-container {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.buttonAdd {
+  --background: #6f6fb5;
+}
+
+.mySubjects {
+  padding-left: 10px;
+  color: white;
+  display: flex;
+}
+
+.mySchedule {
+  padding-left: 10px;
+  color: white;
+  display: flex;
+}
+
+.schedule {
+  border: 0px solid #000;
+  height: 80vh;
+  width: 50%;
+  background-color: #9494cc;
+  border-radius: 20px;
+}
+
+.box {
+  border: 0px solid #000;
+  height: 95vh;
+  width: 40%;
+  background-color: #15154c;
+  border-radius: 20px;
 }
