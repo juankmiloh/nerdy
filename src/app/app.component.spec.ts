@@ -4,6 +4,12 @@ import { provideRouter, Router, RouterLink } from '@angular/router';
 
 import { AppComponent } from './app.component';
 
+declare function expect(actual: any): any;
+
+declare function describe(description: string, action: () => void): void;
+declare function it(description: string, action: () => void | Promise<void>): void;
+declare function beforeEach(action: () => Promise<void>): void;
+
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({

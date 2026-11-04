@@ -1,31 +1,261 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
+<ion-content [fullscreen]="true" class="home-content">
+  <div class="page">
+    <div class="page-header">
       <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Inicio</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <div id="container">
-    <div class="content">
-      <div class="container">
-        <div class="title">Bienvenido a Nerdy's</div>
-        <div class="content-subject">
-          <div class="subjects">
-            <h2 class="mySubjects"><ion-icon name="arrow-forward-outline"></ion-icon>Mis materias</h2>
-            <div class="button-container">
-              <ion-button class="buttonAdd" expand="block" (click)="addSubject('Nueva materia')">Default</ion-button>
-              {{ mySubjects }}
-            </div>
-          </div>
-          <div class="schedule">
-            <h2 class="mySchedule"><ion-icon name="arrow-forward-outline"></ion-icon>Mi horario</h2>
-          </div>
-        </div>
+      <div>
+        <h1 class="title">Hola, bienvenido a Nerdy's</h1>
+        <p class="date">{{ todayLabel }}</p>
       </div>
-      <div class="box"></div>
+    </div>
+
+    <div class="cards">
+      <!-- Mis materias -->
+      <section class="card card-subjects">
+        <h2 class="card-title"><ion-icon name="book-outline"></ion-icon>Mis materias</h2>
+
+        <div class="add-row">
+          <input #subjectInput type="text" placeholder="Materia" (keyup.enter)="addSubject(subjectInput.value); subjectInput.value = ''" />
+          <button class="icon-btn" aria-label="Agregar materia" (click)="addSubject(subjectInput.value); subjectInput.value = ''">
+            <ion-icon name="add-outline"></ion-icon>
+          </button>
+        </div>
+
+        <ul class="chip-list">
+          @for (subject of mySubjects; track $index; let i = $index) { @if (editandoIndice === i) {
+          <li class="add-row edit-row">
+            <input
+              [value]="nombreEditado"
+              aria-label="Editar materia"
+              (input)="nombreEditado = $any($event.target).value"
+              (keyup.enter)="guardarEdicion(i)"
+              (keyup.escape)="editandoIndice = null"
+            />
+            <button class="icon-btn" aria-label="Guardar materia" (click)="guardarEdicion(i)">
+              <ion-icon name="checkmark-outline"></ion-icon>
+            </button>
+          </li>
+          } @else {
+          <li class="chip" [class.active]="selectedSubject === subject">
+            <button class="chip-label" (click)="openSubject(subject)">{{ subject }}</button>
+            <button class="chip-edit" aria-label="Editar materia" (click)="empezarEditar(i)">
+              <ion-icon name="create-outline"></ion-icon>
+            </button>
+            <button class="chip-delete" aria-label="Eliminar materia" (click)="removeSubject(subject)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </button>
+          </li>
+          } } @empty {
+          <li class="empty">No hay materias agregadas</li>
+          }
+        </ul>
+        <!-- Mis periodos -->
+        @if ( selectedSubject ) {
+        <div class="periods">
+          <div class="period-header">
+            <h3>{{ selectedSubject }}</h3>
+            <button class="close-btn" aria-label="Cerrar" (click)="selectedSubject = null; selectedPeriod = null">
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+          </div>
+          <button class="icon-btn" aria-label="Agregar periodo" (click)="addPeriod()">
+            <ion-icon name="add-outline"></ion-icon>
+          </button>
+          <ul class="chip-list">
+            @for (p of period; track p) {
+            <li class="chip" [class.active]="selectedPeriod === p.toString()">
+              <button class="chip-label" (click)="selectedPeriod = p.toString()">Periodo {{ p }}</button>
+              @if ($last) {
+              <button class="chip-delete" aria-label="Eliminar periodo" (click)="removePeriod(p)">
+                <ion-icon name="trash-outline"></ion-icon>
+              </button>
+              }
+            </li>
+            }
+          </ul>
+        </div>
+        <!-- Mis notas -->
+        } @if (selectedPeriod && selectedSubject) {
+        <div class="grades">
+          <div class="add-row">
+            <input #gradeInput type="number" placeholder="Calificación" (keyup.enter)="addGrade(gradeInput.value); gradeInput.value = ''" />
+            <button class="icon-btn" aria-label="Agregar calificación" (click)="addGrade(gradeInput.value); gradeInput.value = ''">
+              <ion-icon name="add-outline"></ion-icon>
+            </button>
+          </div>
+          <ul class="chip-list">
+            @for (grade of grades[selectedSubject]?.[selectedPeriod] || []; track $index) {
+            <li class="chip">
+              <span class="chip-label">{{ grade }}</span>
+              <button class="chip-delete" aria-label="Eliminar calificación" (click)="removeGrade($index)">
+                <ion-icon name="trash-outline"></ion-icon>
+              </button>
+            </li>
+            } @empty {
+            <li class="empty">No hay calificaciones agregadas</li>
+            }
+          </ul>
+          <!-- Promedio -->
+          <p class="average">Definitiva: {{ getAverage(selectedSubject,selectedPeriod).toFixed(1) }}</p>
+        </div>
+        }
+      </section>
+
+      <!-- Hoy tienes -->
+      <section class="card card-today">
+        <h2 class="card-title"><ion-icon name="calendar-outline"></ion-icon>Hoy tienes</h2>
+        <ul class="today-list">
+          @for (entry of entriesForDay(today); track $index) {
+          <li>{{ entry.start }} {{ entry.subject }}</li>
+          } @empty {
+          <li class="empty">Sin clases hoy</li>
+          }
+        </ul>
+        <button class="outline-btn" (click)="isScheduleOpen = true">
+          {{ mySchedule.length ? 'Ver horario completo' : 'Crear horario' }}
+        </button>
+      </section>
+
+      <!-- Mis tareas -->
+      <section class="card card-tasks">
+        <h2 class="card-title"><ion-icon name="clipboard-outline"></ion-icon>Tareas</h2>
+        <ul class="task-list">
+          @for (task of myTask; track task.text) {
+          <li class="chip" [class.done]="task.done">
+            <label class="task-item">
+              <input type="checkbox" [checked]="task.done" (change)="toggleTask(task)" />
+              <span class="chip-label">{{ task.text }}</span>
+            </label>
+          </li>
+          }
+        </ul>
+        <button class="outline-btn" (click)="isTaskOpen = true">{{ myTask.length ? 'Modificar tareas' : 'Crear tareas' }}</button>
+      </section>
     </div>
   </div>
+
+  <ion-modal class="task-modal" [isOpen]="isTaskOpen" (didDismiss)="isTaskOpen = false; editandoTarea = null">
+    <ng-template>
+      <div class="ion-page modal-card">
+        <header class="modal-header">
+          <h2><ion-icon name="clipboard-outline"></ion-icon>Mis tareas</h2>
+          <button class="modal-close" (click)="isTaskOpen = false">Cerrar</button>
+        </header>
+        <div class="modal-body task-form">
+          <div class="add-row">
+            <input #taskInput type="text" placeholder="Nueva tarea" (keyup.enter)="addTask(taskInput.value); taskInput.value = ''" />
+            <button class="icon-btn" aria-label="Agregar tarea" (click)="addTask(taskInput.value); taskInput.value = ''">
+              <ion-icon name="add-outline"></ion-icon>
+            </button>
+          </div>
+          <ul class="chip-list">
+            @for (task of myTask; track task.text) { @if (editandoTarea === task.text) {
+            <li class="add-row edit-row">
+              <input
+                [value]="tareaEditada"
+                aria-label="Editar tarea"
+                (input)="tareaEditada = $any($event.target).value"
+                (keyup.enter)="guardarEdicionTarea(task)"
+                (keyup.escape)="editandoTarea = null"
+              />
+              <button class="icon-btn" aria-label="Guardar tarea" (click)="guardarEdicionTarea(task)">
+                <ion-icon name="checkmark-outline"></ion-icon>
+              </button>
+            </li>
+            } @else {
+            <li class="chip" [class.done]="task.done">
+              <label class="task-item">
+                <input type="checkbox" [checked]="task.done" (change)="toggleTask(task)" />
+                <span class="chip-label">{{ task.text }}</span>
+              </label>
+              <button class="chip-edit" aria-label="Editar tarea" (click)="empezarEditarTarea(task)">
+                <ion-icon name="create-outline"></ion-icon>
+              </button>
+              <button class="chip-delete" aria-label="Eliminar tarea" (click)="removeTask(task)">
+                <ion-icon name="trash-outline"></ion-icon>
+              </button>
+            </li>
+            } }
+          </ul>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
 </ion-content>
+
+<ion-modal class="schedule-modal" [isOpen]="isScheduleOpen" (didDismiss)="isScheduleOpen = false; editandoHorario = null">
+  <ng-template>
+    <div class="ion-page modal-card">
+      <header class="modal-header">
+        <h2><ion-icon name="calendar-outline"></ion-icon>Mi horario</h2>
+        <button class="modal-close" (click)="isScheduleOpen = false">Cerrar</button>
+      </header>
+      <div class="modal-body">
+        <div class="schedule-form">
+          <div class="schedule-fields">
+            <select #daySelect>
+              @for (day of days; track day) {
+              <option [value]="day">{{ day }}</option>
+              }
+            </select>
+            <select #subjectSelect>
+              @for (subject of mySubjects; track subject) {
+              <option [value]="subject">{{ subject }}</option>
+              } @empty {
+              <option value="" disabled selected>Materia</option>
+              }
+            </select>
+            <input #startInput type="time" value="07:00" />
+            <input #endInput type="time" value="08:00" />
+          </div>
+          <button class="primary-btn" (click)="addScheduleEntry(daySelect.value, startInput.value, endInput.value, subjectSelect.value)">
+            Agregar
+          </button>
+        </div>
+
+        <div class="schedule-days">
+          @for (day of days; track day) { @if (entriesForDay(day).length) {
+          <div class="schedule-day">
+            <h3>{{ day }}</h3>
+            <ul>
+              @for (entry of entriesForDay(day); track $index) { @if (editandoHorario === entry) {
+              <li class="schedule-edit" (keyup.escape)="editandoHorario = null">
+                <div class="schedule-fields">
+                  <select #editDay aria-label="Día">
+                    @for (d of days; track d) {
+                    <option [value]="d" [selected]="d === entry.day">{{ d }}</option>
+                    }
+                  </select>
+                  <select #editSubject aria-label="Materia">
+                    @for (subject of mySubjects; track subject) {
+                    <option [value]="subject" [selected]="subject === entry.subject">{{ subject }}</option>
+                    }
+                  </select>
+                  <input #editStart type="time" aria-label="Hora de inicio" [value]="entry.start" />
+                  <input #editEnd type="time" aria-label="Hora de fin" [value]="entry.end" />
+                </div>
+                <button
+                  class="primary-btn"
+                  (click)="guardarEdicionHorario(entry, editDay.value, editStart.value, editEnd.value, editSubject.value)"
+                >
+                  Guardar
+                </button>
+              </li>
+              } @else {
+              <li class="schedule-entry">
+                <span>{{ formatTime(entry.start) }} {{ entry.subject }}</span>
+                <button class="chip-edit" aria-label="Editar clase" (click)="editandoHorario = entry">
+                  <ion-icon name="create-outline"></ion-icon>
+                </button>
+                <button class="chip-delete" aria-label="Eliminar clase" (click)="removeScheduleEntry(entry)">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </button>
+              </li>
+              } }
+            </ul>
+          </div>
+          } }
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>
