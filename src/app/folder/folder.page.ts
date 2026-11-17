@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject, input } from '@angular/core';
-import { IonMenuButton, IonContent, IonIcon, IonModal, IonChip } from '@ionic/angular';
+import { IonMenuButton, IonContent, IonIcon, IonModal } from '@ionic/angular';
 
 interface ScheduleEntry {
   day: string;
@@ -17,7 +17,7 @@ interface Task {
   selector: 'app-folder',
   templateUrl: './folder.page.html',
   styleUrls: ['./folder.page.scss'],
-  imports: [IonMenuButton, IonContent, IonIcon, IonModal, IonChip],
+  imports: [IonMenuButton, IonContent, IonIcon, IonModal],
 })
 export class FolderPage {
   readonly folder = input.required<string>();
@@ -61,6 +61,59 @@ export class FolderPage {
     const storedTask = localStorage.getItem('myTask');
     this.myTask = storedTask ? JSON.parse(storedTask) : [];
   }
+
+  frases = [
+    "¡Hola! Bienvenido a Nerdy's.",
+    "Qué bueno verte en Nerdy's.",
+    '¡Hola! Listos para empezar hoy.',
+    "Bienvenido de nuevo a Nerdy's.",
+    '¡Hola! Tu equipo te espera.',
+    "Qué alegría verte por Nerdy's.",
+    '¡Hola! ¿Cómo va tu día?',
+    "Nerdy's te da la bienvenida.",
+    '¡Hola! A trabajar en equipo.',
+    "Qué gusto saludarte en Nerdy's.",
+    '¡Hola! Todo listo para ti.',
+    "Bienvenido a tu espacio Nerdy's.",
+    '¡Hola! Vamos con toda hoy.',
+    'Qué bueno tenerte conectado aquí.',
+    '¡Hola! Un gran día empieza.',
+    "Tu equipo Nerdy's te espera.",
+    '¡Hola! Conecta con tu equipo.',
+    'Bienvenido, nos alegra verte aquí.',
+    '¡Hola! ¿Listo para colaborar hoy?',
+    "Qué bien verte en Nerdy's.",
+    '¡Hola! Tu oficina está lista.',
+    'Bienvenido a un nuevo día.',
+    '¡Hola! Hagamos que hoy cuente.',
+    'Qué gusto verte de nuevo.',
+    "¡Hola! Nerdy's está listo hoy.",
+    'Bienvenido, empieza a conectar ahora.',
+    '¡Hola! Seguimos avanzando juntos hoy.',
+    'Qué alegría verte por aquí.',
+    '¡Hola! Todo en orden hoy.',
+    "Bienvenido al mundo de Nerdy's.",
+    '¡Hola! Listos para crear juntos.',
+    'Qué bueno saludarte de nuevo.',
+    '¡Hola! Únete a la conversación.',
+    'Bienvenido, tu equipo está listo.',
+    '¡Hola! Comencemos con buena energía.',
+    "Qué gusto tenerte en Nerdy's.",
+    '¡Hola! A darle con todo.',
+    'Bienvenido, todo listo para empezar.',
+    '¡Hola! ¿Qué crearemos hoy?',
+    'Qué bien tenerte de vuelta.',
+    '¡Hola! Tu jornada comienza ahora.',
+    "Bienvenido a tu comunidad Nerdy's.",
+    '¡Hola! Siempre es bueno verte.',
+    'Qué alegría saludarte hoy aquí.',
+    '¡Hola! Conecta y avanza hoy.',
+    "Bienvenido a Nerdy's, empecemos ya.",
+    '¡Hola! Tu día empieza aquí.',
+    'Qué gusto verte conectado hoy.',
+    '¡Hola! Vamos a hacer equipo.',
+    "Bienvenido, Nerdy's te estaba esperando.",
+  ];
 
   addSubject(subject: string) {
     const nombre = subject.trim();
@@ -266,5 +319,11 @@ export class FolderPage {
       .sort((a, b) => a.start.localeCompare(b.start));
     localStorage.setItem('mySchedule', JSON.stringify(this.mySchedule));
     this.editandoHorario = null;
+  }
+  fraseActual = '';
+
+  ngOnInit() {
+    const poscicion = Math.floor(Math.random() * this.frases.length);
+    this.fraseActual = this.frases[poscicion];
   }
 }

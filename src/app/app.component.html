@@ -4,6 +4,15 @@
       <ion-content>
         <div class="menu-header">Nerdy's</div>
 
+        <div class="user-info">
+          <div class="user-avatar">
+            <ion-icon name="person-circle-outline"></ion-icon>
+          </div>
+          <div class="user-details">
+            <div class="user-name">John Doe</div>
+            <div class="user-email">john.doe@example.com</div>
+          </div>
+        </div>
         <ion-list id="inbox-list">
           @for (p of appPages; track p) {
             <ion-menu-toggle auto-hide="false">

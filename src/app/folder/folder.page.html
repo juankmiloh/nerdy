@@ -3,8 +3,8 @@
     <div class="page-header">
       <ion-menu-button></ion-menu-button>
       <div>
-        <h1 class="title">Hola, bienvenido a Nerdy's</h1>
         <p class="date">{{ todayLabel }}</p>
+        <h1 class="title">{{ fraseActual }}</h1>
       </div>
     </div>
 
@@ -126,6 +126,8 @@
               <span class="chip-label">{{ task.text }}</span>
             </label>
           </li>
+          } @empty {
+          <li class="empty">Sin tareas pendientes</li>
           }
         </ul>
         <button class="outline-btn" (click)="isTaskOpen = true">{{ myTask.length ? 'Modificar tareas' : 'Crear tareas' }}</button>
