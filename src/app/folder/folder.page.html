@@ -19,11 +19,21 @@
       <!--Tu próxima clase-->
       <section class="card next-class">
         <div class="next-class-header">
-          <h2 class="card-title"><ion-icon name="time-outline"></ion-icon>Próxima clase</h2>
+          <h2 class="card-title">
+            <div class="icon-container"><ion-icon name="time-outline"></ion-icon></div>
+            Próxima clase
+          </h2>
         </div>
       </section>
 
+      <!-- Racha de estudio -->
+      <section class="card card-streak">
+        <h2 class="card-title">Racha de estudio</h2>
+        <p class="streak-count">___ días</p>
+      </section>
+
       <!-- Mis materias -->
+      @if (!hideCard) {
       <section class="card card-subjects">
         <h2 class="card-title"><ion-icon name="book-outline"></ion-icon>Mis materias</h2>
         <div class="add-row">
@@ -145,6 +155,7 @@
         </ul>
         <button class="outline-btn" (click)="isTaskOpen = true">{{ myTask.length ? 'Modificar tareas' : 'Crear tareas' }}</button>
       </section>
+      }
     </div>
   </div>
 

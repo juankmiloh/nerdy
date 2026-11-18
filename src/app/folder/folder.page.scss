@@ -1,12 +1,15 @@
 :host,
 ion-modal {
+  --purple-baby: #fbfaff;
   --purple-bg: #eeedfe;
   --purple-chip: #cecbf6;
   --purple-text: #3c3489;
   --purple-strong: #534ab7;
+  --green-baby: #f0faf6;
   --green-bg: #e1f5ee;
   --green-text: #085041;
   --green-strong: #0f6e56;
+  --peach-baby: #fcf6f3;
   --peach-bg: #faece7;
   --peach-text: #993c1d;
   --peach-strong: #712b13;
@@ -69,17 +72,19 @@ ul {
 }
 
 .card {
-  border-radius: 16px;
-  padding: 16px;
+  flex: 1 1 280px;
+  border-radius: 22px;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  min-height: 250px;
+  gap: 12px;
+  height: 232px;
+  width: auto;
 }
 
 .card-title {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 6px;
   margin: 0;
   font-size: 18px;
@@ -544,6 +549,32 @@ ion-modal.task-modal {
 .card-average {
   background: var(--purple-strong);
   color: var(--purple-bg);
+}
+
+.next-class {
+  background: var(--green-baby);
+  color: var(--green-text);
+}
+
+.icon-container {
+  align-content: center;
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  background: var(--yellow-bg);
+  color: var(--yellow-text);
+  border-radius: 8px;
+}
+
+.card-streak {
+  background: var(--peach-baby);
+  color: var(--peach-text);
+
+  .streak-count {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 600;
+  }
 }
 
 .schedule-edit {
