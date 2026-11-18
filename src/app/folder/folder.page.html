@@ -9,10 +9,23 @@
     </div>
 
     <div class="cards">
+      <!--Datos principales-->
+      <section class="card card-average">
+        <h2 class="card-title">Promedio general</h2>
+        <h1 class="general-average">/5.0</h1>
+        Meta:___,¡Te faltan___!
+      </section>
+
+      <!--Tu próxima clase-->
+      <section class="card next-class">
+        <div class="next-class-header">
+          <h2 class="card-title"><ion-icon name="time-outline"></ion-icon>Próxima clase</h2>
+        </div>
+      </section>
+
       <!-- Mis materias -->
       <section class="card card-subjects">
         <h2 class="card-title"><ion-icon name="book-outline"></ion-icon>Mis materias</h2>
-
         <div class="add-row">
           <input #subjectInput type="text" placeholder="Materia" (keyup.enter)="addSubject(subjectInput.value); subjectInput.value = ''" />
           <button class="icon-btn" aria-label="Agregar materia" (click)="addSubject(subjectInput.value); subjectInput.value = ''">

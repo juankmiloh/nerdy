@@ -11,6 +11,8 @@ ion-modal {
   --peach-text: #993c1d;
   --peach-strong: #712b13;
   --peach-accent: #e5533d;
+  --yellow-bg: #ffea99;
+  --yellow-text: #e0bc00;
 }
 
 .home-content {
@@ -537,6 +539,11 @@ ion-modal.task-modal {
       opacity: 0.5;
     }
   }
+}
+
+.card-average {
+  background: var(--purple-strong);
+  color: var(--purple-bg);
 }
 
 .schedule-edit {
