@@ -1,11 +1,11 @@
 <ion-content [fullscreen]="true" class="home-content">
   <div class="page">
     <div class="page-header">
-      <ion-menu-button></ion-menu-button>
-      <div>
+      <div class="content">
         <p class="date">{{ todayLabel }}</p>
         <h1 class="title">{{ fraseActual }}</h1>
       </div>
+      <button class="outline-btn" (click)="isTaskOpen = true">{{ myTask.length ? 'Modificar tareas' : 'Crear tareas' }}</button>
     </div>
 
     <div class="cards">
@@ -31,101 +31,103 @@
         <h2 class="card-title">Racha de estudio</h2>
         <p class="streak-count">___ días</p>
       </section>
+    </div>
 
-      <!-- Mis materias -->
-      @if (!hideCard) {
-      <section class="card card-subjects">
-        <h2 class="card-title"><ion-icon name="book-outline"></ion-icon>Mis materias</h2>
+    <!-- Mis materias -->
+    @if (!hideCard) {
+    <section class="card card-subjects">
+      <h2 class="card-title"><ion-icon name="book-outline"></ion-icon>Mis materias</h2>
+      <div class="add-row">
+        <input #subjectInput type="text" placeholder="Materia" (keyup.enter)="addSubject(subjectInput.value); subjectInput.value = ''" />
+        <button class="icon-btn" aria-label="Agregar materia" (click)="addSubject(subjectInput.value); subjectInput.value = ''">
+          <ion-icon name="add-outline"></ion-icon>
+        </button>
+      </div>
+
+      <ul class="chip-list">
+        @for (subject of mySubjects; track $index; let i = $index) { @if (editandoIndice === i) {
+        <li class="add-row edit-row">
+          <input
+            [value]="nombreEditado"
+            aria-label="Editar materia"
+            (input)="nombreEditado = $any($event.target).value"
+            (keyup.enter)="guardarEdicion(i)"
+            (keyup.escape)="editandoIndice = null"
+          />
+          <button class="icon-btn" aria-label="Guardar materia" (click)="guardarEdicion(i)">
+            <ion-icon name="checkmark-outline"></ion-icon>
+          </button>
+        </li>
+        } @else {
+        <li class="chip" [class.active]="selectedSubject === subject">
+          <button class="chip-label" (click)="openSubject(subject)">{{ subject }}</button>
+          <button class="chip-edit" aria-label="Editar materia" (click)="empezarEditar(i)">
+            <ion-icon name="create-outline"></ion-icon>
+          </button>
+          <button class="chip-delete" aria-label="Eliminar materia" (click)="removeSubject(subject)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </button>
+        </li>
+        } } @empty {
+        <li class="empty">No hay materias agregadas</li>
+        }
+      </ul>
+      <!-- Mis periodos -->
+      @if ( selectedSubject ) {
+      <div class="periods">
+        <div class="period-header">
+          <h3>{{ selectedSubject }}</h3>
+          <button class="close-btn" aria-label="Cerrar" (click)="selectedSubject = null; selectedPeriod = null">
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+        </div>
+        <button class="icon-btn" aria-label="Agregar periodo" (click)="addPeriod()">
+          <ion-icon name="add-outline"></ion-icon>
+        </button>
+        <ul class="chip-list">
+          @for (p of period; track p) {
+          <li class="chip" [class.active]="selectedPeriod === p.toString()">
+            <button class="chip-label" (click)="selectedPeriod = p.toString()">Periodo {{ p }}</button>
+            @if ($last) {
+            <button class="chip-delete" aria-label="Eliminar periodo" (click)="removePeriod(p)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </button>
+            }
+          </li>
+          }
+        </ul>
+      </div>
+      <!-- Mis notas -->
+      } @if (selectedPeriod && selectedSubject) {
+      <div class="grades">
         <div class="add-row">
-          <input #subjectInput type="text" placeholder="Materia" (keyup.enter)="addSubject(subjectInput.value); subjectInput.value = ''" />
-          <button class="icon-btn" aria-label="Agregar materia" (click)="addSubject(subjectInput.value); subjectInput.value = ''">
+          <input #gradeInput type="number" placeholder="Calificación" (keyup.enter)="addGrade(gradeInput.value); gradeInput.value = ''" />
+          <button class="icon-btn" aria-label="Agregar calificación" (click)="addGrade(gradeInput.value); gradeInput.value = ''">
             <ion-icon name="add-outline"></ion-icon>
           </button>
         </div>
-
         <ul class="chip-list">
-          @for (subject of mySubjects; track $index; let i = $index) { @if (editandoIndice === i) {
-          <li class="add-row edit-row">
-            <input
-              [value]="nombreEditado"
-              aria-label="Editar materia"
-              (input)="nombreEditado = $any($event.target).value"
-              (keyup.enter)="guardarEdicion(i)"
-              (keyup.escape)="editandoIndice = null"
-            />
-            <button class="icon-btn" aria-label="Guardar materia" (click)="guardarEdicion(i)">
-              <ion-icon name="checkmark-outline"></ion-icon>
-            </button>
-          </li>
-          } @else {
-          <li class="chip" [class.active]="selectedSubject === subject">
-            <button class="chip-label" (click)="openSubject(subject)">{{ subject }}</button>
-            <button class="chip-edit" aria-label="Editar materia" (click)="empezarEditar(i)">
-              <ion-icon name="create-outline"></ion-icon>
-            </button>
-            <button class="chip-delete" aria-label="Eliminar materia" (click)="removeSubject(subject)">
+          @for (grade of grades[selectedSubject]?.[selectedPeriod] || []; track $index) {
+          <li class="chip">
+            <span class="chip-label">{{ grade }}</span>
+            <button class="chip-delete" aria-label="Eliminar calificación" (click)="removeGrade($index)">
               <ion-icon name="trash-outline"></ion-icon>
             </button>
           </li>
-          } } @empty {
-          <li class="empty">No hay materias agregadas</li>
+          } @empty {
+          <li class="empty">No hay calificaciones agregadas</li>
           }
         </ul>
-        <!-- Mis periodos -->
-        @if ( selectedSubject ) {
-        <div class="periods">
-          <div class="period-header">
-            <h3>{{ selectedSubject }}</h3>
-            <button class="close-btn" aria-label="Cerrar" (click)="selectedSubject = null; selectedPeriod = null">
-              <ion-icon name="close-outline"></ion-icon>
-            </button>
-          </div>
-          <button class="icon-btn" aria-label="Agregar periodo" (click)="addPeriod()">
-            <ion-icon name="add-outline"></ion-icon>
-          </button>
-          <ul class="chip-list">
-            @for (p of period; track p) {
-            <li class="chip" [class.active]="selectedPeriod === p.toString()">
-              <button class="chip-label" (click)="selectedPeriod = p.toString()">Periodo {{ p }}</button>
-              @if ($last) {
-              <button class="chip-delete" aria-label="Eliminar periodo" (click)="removePeriod(p)">
-                <ion-icon name="trash-outline"></ion-icon>
-              </button>
-              }
-            </li>
-            }
-          </ul>
-        </div>
-        <!-- Mis notas -->
-        } @if (selectedPeriod && selectedSubject) {
-        <div class="grades">
-          <div class="add-row">
-            <input #gradeInput type="number" placeholder="Calificación" (keyup.enter)="addGrade(gradeInput.value); gradeInput.value = ''" />
-            <button class="icon-btn" aria-label="Agregar calificación" (click)="addGrade(gradeInput.value); gradeInput.value = ''">
-              <ion-icon name="add-outline"></ion-icon>
-            </button>
-          </div>
-          <ul class="chip-list">
-            @for (grade of grades[selectedSubject]?.[selectedPeriod] || []; track $index) {
-            <li class="chip">
-              <span class="chip-label">{{ grade }}</span>
-              <button class="chip-delete" aria-label="Eliminar calificación" (click)="removeGrade($index)">
-                <ion-icon name="trash-outline"></ion-icon>
-              </button>
-            </li>
-            } @empty {
-            <li class="empty">No hay calificaciones agregadas</li>
-            }
-          </ul>
-          <!-- Promedio -->
-          <p class="average">Definitiva: {{ getAverage(selectedSubject,selectedPeriod).toFixed(1) }}</p>
-        </div>
-        }
-      </section>
-
+        <!-- Promedio -->
+        <p class="average">Definitiva: {{ getAverage(selectedSubject,selectedPeriod).toFixed(1) }}</p>
+      </div>
+      }
+    </section>
+    }
+    <div class="down-info">
       <!-- Hoy tienes -->
       <section class="card card-today">
-        <h2 class="card-title"><ion-icon name="calendar-outline"></ion-icon>Hoy tienes</h2>
+        <h2 class="card-title">Hoy tienes</h2>
         <ul class="today-list">
           @for (entry of entriesForDay(today); track $index) {
           <li>{{ entry.start }} {{ entry.subject }}</li>
@@ -140,7 +142,7 @@
 
       <!-- Mis tareas -->
       <section class="card card-tasks">
-        <h2 class="card-title"><ion-icon name="clipboard-outline"></ion-icon>Tareas</h2>
+        <h2 class="card-title">Tareas</h2>
         <ul class="task-list">
           @for (task of myTask; track task.text) {
           <li class="chip" [class.done]="task.done">
@@ -153,9 +155,7 @@
           <li class="empty">Sin tareas pendientes</li>
           }
         </ul>
-        <button class="outline-btn" (click)="isTaskOpen = true">{{ myTask.length ? 'Modificar tareas' : 'Crear tareas' }}</button>
       </section>
-      }
     </div>
   </div>
 

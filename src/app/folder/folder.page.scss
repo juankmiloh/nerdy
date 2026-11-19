@@ -19,9 +19,9 @@ ion-modal {
 }
 
 .home-content {
-  --background: #ffffff;
+  --background: #fafafa;
   color: #1a1a1a;
-  font-family: 'Figtree', var(--ion-font-family), sans-serif;
+  font-family: 'Figtree', var(--ion-font-family), roboto, 'Helvetica Neue', sans-serif;
 }
 
 button {
@@ -37,13 +37,16 @@ ul {
 
 .page {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .page-header {
   display: flex;
-  align-items: flex-start;
+  align-items: end;
   gap: 8px;
-  margin-bottom: 20px;
+  justify-content: space-between;
 
   ion-menu-button {
     color: var(--purple-strong);
@@ -53,32 +56,32 @@ ul {
 
 .title {
   margin: 0;
-  font-size: 32px;
-  font-weight: 600;
+  font-size: 50px;
+  font-weight: 575;
   color: #1a1a1a;
 }
 
 .date {
   margin: 2px 0 0;
-  font-size: 14px;
+  font-size: 18px;
   color: #444441;
 }
 
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
-  gap: 6px;
+  gap: 16px;
   align-items: start;
 }
 
 .card {
+  border: #f2f2f2 2px solid;
   flex: 1 1 280px;
   border-radius: 22px;
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  height: 232px;
   width: auto;
 }
 
@@ -148,9 +151,13 @@ ul {
 .chip {
   display: flex;
   align-items: center;
-  border-radius: 8px;
   background: var(--purple-chip);
   color: #26215c;
+  border-bottom: #f2f2f2 3px solid;
+
+  &:last-child {
+    border-bottom: none;
+  }
 
   &.active {
     outline: 2px solid var(--purple-strong);
@@ -273,8 +280,9 @@ ul {
 
 /* Hoy tienes */
 .card-today {
-  background: var(--green-bg);
-  color: var(--green-text);
+  background: #ffffff;
+  color: #110b0a;
+  height: auto;
 }
 
 .today-list {
@@ -287,29 +295,19 @@ ul {
 
 .outline-btn {
   padding: 6px 10px;
-  border: 1px solid var(--green-strong);
   border-radius: 8px;
-  background: #e1f5ee;
-  color: var(--green-text);
-  font-size: 15px;
+  background: #110b0a;
+  color: #ffffff;
+  border: #f2f2f2 2px solid;
+  font-size: 20px;
   min-height: 40px;
 }
 
 /* Tareas */
 .card-tasks {
-  background: var(--peach-bg);
-  color: var(--peach-text);
-
-  .outline-btn {
-    padding: 6px 10px;
-    border: 1px solid var(--peach-strong);
-    border-radius: 8px;
-    background: #faece7;
-    color: var(--peach-text);
-    font-size: 15px;
-    font-weight: 500;
-    min-height: 40px;
-  }
+  background: #ffffff;
+  color: #110b0a;
+  height: auto;
 }
 
 .task-list {
@@ -325,8 +323,8 @@ ul {
   .chip {
     min-height: 36px;
     padding: 0 10px;
-    background: #f5c4b3;
-    color: var(--peach-strong);
+    background: transparent;
+    color: #110b0a;
 
     &.done {
       opacity: 0.75;
@@ -370,24 +368,9 @@ ion-modal.task-modal {
   }
 }
 
-ion-modal.schedule-modal {
-  --modal-header: #085041;
-  --modal-bg: #e1f5ee;
-  --modal-text: var(--green-text);
-  --edit-bg: #e1f5ee;
-}
-
-ion-modal.task-modal {
-  --modal-header: #712b13;
-  --modal-bg: #faece7;
-  --modal-text: var(--peach-strong);
-  --edit-color: var(--peach-text);
-  --edit-bg: #faece7;
-}
-
 .modal-card {
-  background: var(--modal-bg);
-  color: var(--modal-text);
+  background: #ffffff;
+  color: #110b0a;
   font-family: 'Figtree', var(--ion-font-family), sans-serif;
 }
 
@@ -396,8 +379,8 @@ ion-modal.task-modal {
   align-items: center;
   justify-content: space-between;
   padding: 16px 18px;
-  background: var(--modal-header);
-  color: #ffffff;
+  background: var(--yellow-bg);
+  color: #110b0a;
 
   h2 {
     display: flex;
@@ -417,7 +400,7 @@ ion-modal.task-modal {
   padding: 0;
   border: none;
   background: transparent;
-  color: #ffffff;
+  color: #110b0a;
   font-size: 15px;
   font-weight: 600;
 }
@@ -549,11 +532,13 @@ ion-modal.task-modal {
 .card-average {
   background: var(--purple-strong);
   color: var(--purple-bg);
+  height: 232px;
 }
 
 .next-class {
-  background: var(--green-baby);
+  background: #ffffff;
   color: var(--green-text);
+  height: 232px;
 }
 
 .icon-container {
@@ -566,9 +551,17 @@ ion-modal.task-modal {
   border-radius: 8px;
 }
 
+.down-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
 .card-streak {
-  background: var(--peach-baby);
-  color: var(--peach-text);
+  background: var(--yellow-bg);
+  color: #110b0a;
+  height: 232px;
 
   .streak-count {
     margin: 0;
@@ -601,7 +594,7 @@ ion-modal.task-modal {
 
 /* Modal de tareas */
 .task-form {
-  --input-color: var(--peach-strong);
+  --input-color: #110b0a;
   --btn-color: var(--peach-text);
 
   .add-row {

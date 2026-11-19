@@ -62,22 +62,6 @@ export class FolderPage {
 
     const storedTask = localStorage.getItem('myTask');
     this.myTask = storedTask ? JSON.parse(storedTask) : [];
-
-    const mySchedule = JSON.parse(localStorage.getItem('mySchedule') ?? '[]');
-    const ahora = new Date();
-    const hoy = ahora.getDay();
-    const minutosAhora = ahora.getHours() * 60 + ahora.getMinutes();
-
-    const aMinutos = (hora: string) => {
-      const [h, m] = hora.split(':'); // "10:00" → ["10", "00"]
-      return Number(h) * 60 + Number(m);
-    };
-
-    const pendientes = mySchedule
-      .filter((c: any) => c.dia === hoy && aMinutos(c.hora) > minutosAhora)
-      .sort((a: any, b: any) => aMinutos(a.hora) - aMinutos(b.hora));
-
-    this.proximaClase = pendientes[0] ?? null;
   }
 
   frases = [
