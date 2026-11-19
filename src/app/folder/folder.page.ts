@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject, input } from '@angular/core';
-import { IonMenuButton, IonContent, IonIcon, IonModal } from '@ionic/angular';
+import { IonContent, IonIcon, IonModal } from '@ionic/angular';
 
 interface ScheduleEntry {
   day: string;
@@ -17,7 +17,7 @@ interface Task {
   selector: 'app-folder',
   templateUrl: './folder.page.html',
   styleUrls: ['./folder.page.scss'],
-  imports: [IonMenuButton, IonContent, IonIcon, IonModal],
+  imports: [IonContent, IonIcon, IonModal],
 })
 export class FolderPage {
   readonly folder = input.required<string>();

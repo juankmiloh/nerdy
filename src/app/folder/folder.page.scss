@@ -5,15 +5,6 @@ ion-modal {
   --purple-chip: #cecbf6;
   --purple-text: #3c3489;
   --purple-strong: #534ab7;
-  --green-baby: #f0faf6;
-  --green-bg: #e1f5ee;
-  --green-text: #085041;
-  --green-strong: #0f6e56;
-  --peach-baby: #fcf6f3;
-  --peach-bg: #faece7;
-  --peach-text: #993c1d;
-  --peach-strong: #712b13;
-  --peach-accent: #e5533d;
   --yellow-bg: #ffea99;
   --yellow-text: #e0bc00;
 }
@@ -146,13 +137,13 @@ ul {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  background: #ffffff;
 }
 
 .chip {
   display: flex;
   align-items: center;
-  background: var(--purple-chip);
-  color: #26215c;
+  color: var(--purple-text);
   border-bottom: #f2f2f2 3px solid;
 
   &:last-child {
@@ -169,7 +160,7 @@ ul {
   min-width: 0;
   padding: 6px 0 6px 8px;
   border: none;
-  background: transparent;
+  background: #ffffff;
   color: inherit;
   font-size: 15px;
   text-align: left;
@@ -537,7 +528,7 @@ ion-modal.task-modal {
 
 .next-class {
   background: #ffffff;
-  color: var(--green-text);
+  color: #110b0a;
   height: 232px;
 }
 
@@ -595,7 +586,7 @@ ion-modal.task-modal {
 /* Modal de tareas */
 .task-form {
   --input-color: #110b0a;
-  --btn-color: var(--peach-text);
+  --btn-color: #110b0a;
 
   .add-row {
     gap: 8px;
@@ -651,8 +642,8 @@ ion-modal.task-modal {
     cursor: pointer;
 
     &:checked {
-      border-color: var(--peach-accent);
-      background: var(--peach-accent);
+      border-color: var(--yellow-bg);
+      background: var(--yellow-bg);
     }
 
     &:checked::after {
@@ -674,5 +665,5 @@ ion-modal.task-modal {
   --input-color: #534ab7;
 }
 .task-form {
-  --input-color: #712b13;
+  --input-color: #110b0a;
 }

@@ -37,7 +37,7 @@ import {
 export class AppComponent {
   protected readonly appPages = [
     { title: 'Inicio', url: '/folder/Inbox', icon: 'home' },
-    { title: 'Materias', url: '/folder/Materias', icon: 'book' },
+    { title: 'Materias', url: '/subject-detail', icon: 'book' },
     { title: 'Horario', url: '/folder/Horario', icon: 'calendar' },
     { title: 'Tareas', url: '/folder/Tareas', icon: 'clipboard' },
   ];
