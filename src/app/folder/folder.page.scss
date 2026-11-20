@@ -11,7 +11,7 @@ ion-modal {
 
 .home-content {
   --background: #fafafa;
-  color: #1a1a1a;
+  color: #110b0a;
   font-family: 'Figtree', var(--ion-font-family), roboto, 'Helvetica Neue', sans-serif;
 }
 
@@ -49,7 +49,6 @@ ul {
   margin: 0;
   font-size: 50px;
   font-weight: 575;
-  color: #1a1a1a;
 }
 
 .date {
@@ -524,6 +523,12 @@ ion-modal.task-modal {
   background: var(--purple-strong);
   color: var(--purple-bg);
   height: 232px;
+}
+
+.general-average {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
 }
 
 .next-class {

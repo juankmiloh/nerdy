@@ -153,6 +153,27 @@ export class FolderPage {
     return suma / notas.length;
   }
 
+  calcularPromedio(): number {
+    let suma = 0;
+    let cantidad = 0;
+
+    for (const materia of this.mySubjects) {
+      const notasPorPeriodo = this.grades[materia];
+      if (!notasPorPeriodo) {
+        continue;
+      }
+
+      for (const notas of Object.values(notasPorPeriodo)) {
+        for (const nota of notas) {
+          suma = suma + Number(nota);
+          cantidad++;
+        }
+      }
+    }
+
+    return cantidad === 0 ? 0 : suma / cantidad;
+  }
+
   addScheduleEntry(day: string, start: string, end: string, subject: string) {
     if (!day || !start || !end || !subject || start >= end) {
       console.log('datos de horario inválidos');
